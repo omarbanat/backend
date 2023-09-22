@@ -1,14 +1,15 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 const app = express();
 const port = 8000;
+const MONGODB_URL = process.env.MONGODB_URL;
 
 async function main() {
-  await mongoose.connect(
-    'mongodb+srv://ojbanat:mfSJ0FarSCjdfOMp@cluster0.8vlkrfp.mongodb.net/blogsDB?retryWrites=true&w=majority'
-  );}
+  await mongoose.connect(MONGODB_URL);
+}
 
 main()
   .then(() => console.log('success'))
@@ -16,9 +17,7 @@ main()
 
 // async function mainUsingTryCatch() {
 //   try {
-//     await mongoose.connect(
-//       'mongodb+srv://ojbanat:mfSJ0FarSCjdfOMp@cluster0.8vlkrfp.mongodb.net/blogsDB?retryWrites=true&w=majority'
-//     );
+//     await mongoose.connect(MONGODB_URL);
 //     console.log('success');
 //   } catch (error) {
 //     console.log(error);
