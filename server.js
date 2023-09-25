@@ -1,34 +1,14 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
+const dbConnection = require('./config/db');
 const { Schema, model } = mongoose;
 
 const app = express();
 const port = 8000;
-const MONGODB_URL = process.env.MONGODB_URL;
 
 // used for sending json body in the request
 app.use(express.json());
 app.use(express.urlencoded());
-
-async function main() {
-  await mongoose.connect(MONGODB_URL);
-}
-
-main()
-  .then(() => console.log('success'))
-  .catch((err) => console.log(err));
-
-// async function mainUsingTryCatch() {
-//   try {
-//     await mongoose.connect(MONGODB_URL);
-//     console.log('success');
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-// mainUsingTryCatch();
 
 const blogsSchema = new Schema({
   title: { type: String, required: true, unique: true },
@@ -127,5 +107,8 @@ app.delete('/:ID', async (req, res) => {
 });
 
 app.listen(port, () => {
+  dbConnection()
+    .then(() => console.log('success'))
+    .catch((err) => console.log(err));
   console.log(`Example app listening on port ${port}`);
 });
