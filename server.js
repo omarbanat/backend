@@ -57,6 +57,24 @@ app.get('/', async (req, res) => {
   }
 });
 
+app.get('/:ID', async (req, res) => {
+  try {
+    // const blog = await Blog.find({ _id: req.params.ID });
+    const blog = await Blog.findById(req.params.ID);
+    res.status(200).json({
+      success: true,
+      message: 'Blog retrieved successfully',
+      data: blog,
+    });
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      message: 'unable to get blog by ID',
+      error: error,
+    });
+  }
+});
+
 app.post('/', async (req, res) => {
   try {
     const blog = await Blog.create(req.body);
@@ -74,8 +92,21 @@ app.post('/', async (req, res) => {
   }
 });
 
-app.put('/', (req, res) => {
-  //   res.send('Hello from /put request');
+app.put('/:ID', async (req, res) => {
+  try {
+    const blog = await Blog.findByIdAndUpdate(req.params.ID, req.body);
+    res.status(200).json({
+      success: true,
+      message: 'Blog updated successfully.',
+      data: blog,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: 'Unable to update blog',
+      error: error,
+    });
+  }
 });
 
 app.delete('/:ID', async (req, res) => {
