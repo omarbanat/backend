@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const dbConnection = require('./config/db');
-const { Schema, model } = mongoose;
+const Blog = require('./models/Blog');
 
 const app = express();
 const port = 8000;
@@ -9,16 +9,6 @@ const port = 8000;
 // used for sending json body in the request
 app.use(express.json());
 app.use(express.urlencoded());
-
-const blogsSchema = new Schema({
-  title: { type: String, required: true, unique: true },
-  publisher: { type: String, required: true },
-  date: { type: Date, required: true },
-  body: { type: String, required: true },
-  keyword: String,
-});
-
-const Blog = model('Blogs', blogsSchema);
 
 app.get('/', async (req, res) => {
   try {
