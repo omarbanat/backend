@@ -11,9 +11,12 @@ const {
   deleteBlog,
 } = require('../contollers/blogsController');
 
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+
 router.get('/getAll', getAllBlogs);
 router.get('/get/:ID', getBlogByID);
-router.post('/add', addBlog);
+router.post('/add', upload.single('img'), addBlog);
 router.put('/update/:ID', updateBlogByID);
 router.delete('/delete/:ID', deleteBlog);
 

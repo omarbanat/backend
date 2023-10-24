@@ -1,3 +1,4 @@
+const axios = require('axios');
 const Blog = require('../models/Blog');
 
 const getAllBlogs = async (req, res) => {
@@ -36,8 +37,23 @@ const getBlogByID = async (req, res) => {
 };
 
 const addBlog = async (req, res) => {
+  // const { title, publisher, date, body } = req.body;
+
   try {
-    const blog = await Blog.create(req.body);
+    const formData = new FormData();
+    formData.append('key', 'fc45b9bc491df49d8c66b1f010c647ae');
+    formData.append('image', req.file.buffer.toString('base64'));
+    const response = await axios.post(
+      'https://api.imgbb.com/1/upload',
+      formData
+    );
+
+    const imageURL = response?.data?.data?.url;
+
+    const blog = await Blog.create({
+      ...req.body,
+      image: imageURL,
+    });
     res.status(200).json({
       success: true,
       message: 'Blog added successfully',
